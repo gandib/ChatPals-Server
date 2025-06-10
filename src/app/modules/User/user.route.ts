@@ -45,8 +45,11 @@ router.post(
 );
 
 router.get('/all-user', userControllers.getAllUser);
+
 router.get('/all-admin', userControllers.getAllAdmin);
+
 router.get('/:email', userControllers.getUser);
+
 router.get('/user-by-id/:id', userControllers.getUserById);
 
 export const userRoutes = router;

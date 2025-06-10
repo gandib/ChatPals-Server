@@ -4,6 +4,12 @@ import { messageControllers } from './Message.controller';
 
 const router = express.Router();
 
+router.get(
+  '/mutual-chat',
+  auth('user', 'admin'),
+  messageControllers.getMutualConnections,
+);
+
 router.get('/:roomId', auth('user', 'admin'), messageControllers.getAllMessage);
 
 // router.get('/', messageControllers.getAllMessage);

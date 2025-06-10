@@ -94,10 +94,7 @@ const getAllAdmin = async () => {
 };
 
 const getUser = async (email: string) => {
-  const result = await User.findOne({ email: email })
-    .select('-password')
-    .populate('follower following');
-
+  const result = await User.findOne({ email: email }).select('-password');
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, 'User Not found!');
   }

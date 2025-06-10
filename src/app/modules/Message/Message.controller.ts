@@ -2,6 +2,8 @@ import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { messageServices } from './Message.service';
+import { JwtPayload } from 'jsonwebtoken';
+import { TUser } from '../User/user.interface';
 
 const getAllMessage = catchAsync(async (req, res) => {
   const { roomId } = req.params;
@@ -12,6 +14,20 @@ const getAllMessage = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Message retrieved successfully',
+    data: result,
+  });
+});
+
+const getMutualConnections = catchAsync(async (req, res) => {
+  const user = req.user;
+  const result = await messageServices.getMutualConnections(
+    user as JwtPayload & TUser,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Mutual connections retrieved successfully',
     data: result,
   });
 });
@@ -69,6 +85,7 @@ const getAllMessage = catchAsync(async (req, res) => {
 
 export const messageControllers = {
   getAllMessage,
+  getMutualConnections,
   // getSingleMessage,
   // updateMessage,
   // deleteMessage,

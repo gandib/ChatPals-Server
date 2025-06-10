@@ -61,6 +61,7 @@ const getUser = catchAsync(async (req, res) => {
 
 const getUserById = catchAsync(async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   const result = await userServices.getUserById(id as string);
 
   sendResponse(res, {
