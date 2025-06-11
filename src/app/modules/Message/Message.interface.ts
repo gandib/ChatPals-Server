@@ -6,4 +6,6 @@ export interface TMessage {
   sender: Types.ObjectId;
   receiver: Types.ObjectId;
   roomId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
