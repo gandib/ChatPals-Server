@@ -7,7 +7,6 @@ import { TUser } from '../User/user.interface';
 
 const getAllMessage = catchAsync(async (req, res) => {
   const { roomId } = req.params;
-  console.log(roomId);
   const result = await messageServices.getMessage(roomId);
 
   sendResponse(res, {

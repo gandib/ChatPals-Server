@@ -3,7 +3,8 @@ import { TMessage } from './Message.interface';
 
 const messageSchema = new Schema<TMessage>(
   {
-    message: { type: String, required: [true, 'Message is required!'] },
+    message: { type: String, default: '' },
+    image: { type: String, default: null },
     sender: {
       type: Schema.Types.ObjectId,
       required: [true, 'Sender Id is required!'],

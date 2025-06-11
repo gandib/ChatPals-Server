@@ -5,6 +5,7 @@ const createMessageValidationSchema = z.object({
     sender: z.string({ required_error: 'Sender Id is required!' }),
     receiver: z.string({ required_error: 'Receiver Id is required!' }),
     message: z.string({ required_error: 'Message is required!' }),
+    image: z.string().url().optional(),
     roomId: z.string({ required_error: 'Room id is required!' }),
   }),
 });

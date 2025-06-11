@@ -4,6 +4,7 @@ import app from './app';
 import http from 'http';
 import { Server } from 'socket.io';
 import { Message } from './app/modules/Message/Message.model';
+import { sendImageToCloudinary } from './app/utils/sendImageToCloudinary';
 
 // Create raw HTTP server
 const server = http.createServer(app);
@@ -24,21 +25,44 @@ io.on('connection', (socket) => {
     socket.join(roomId);
   });
 
-  socket.on('sendMessage', async ({ message, sender, receiver, roomId }) => {
-    const newMsg = await Message.create({
-      message,
-      sender: sender,
-      receiver: receiver,
-      roomId,
-    });
+  socket.on(
+    'sendMessage',
+    async ({ message, sender, receiver, roomId, image }) => {
+      try {
+        let imageUrl: string | null = null;
 
-    const populatedMsg = await Message.findById(newMsg._id).populate(
-      'sender',
-      'name email',
-    );
+        if (image) {
+          const result = (await sendImageToCloudinary(image)) as {
+            secure_url: string;
+          };
+          imageUrl = result?.secure_url || null;
+        }
 
-    io.to(roomId).emit('newMessage', populatedMsg);
-  });
+        const trimmedMessage = message?.trim() || '';
+
+        if (!trimmedMessage && !imageUrl) {
+          return;
+        }
+
+        const newMsg = await Message.create({
+          message: trimmedMessage,
+          sender,
+          receiver,
+          roomId,
+          image: imageUrl,
+        });
+
+        const populatedMsg = await Message.findById(newMsg._id).populate(
+          'sender',
+          'name email',
+        );
+
+        io.to(roomId).emit('newMessage', populatedMsg);
+      } catch (err) {
+        console.error('Error saving message:', err);
+      }
+    },
+  );
 
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
