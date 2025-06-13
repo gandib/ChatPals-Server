@@ -6,6 +6,7 @@ export interface TMessage {
   image: string;
   sender: Types.ObjectId;
   receiver: Types.ObjectId;
+  readBy: Types.ObjectId;
   roomId: string;
   createdAt: Date;
   updatedAt: Date;

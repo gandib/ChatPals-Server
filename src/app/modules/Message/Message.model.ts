@@ -15,6 +15,7 @@ const messageSchema = new Schema<TMessage>(
       required: [true, 'Receiver Id is required!'],
       ref: 'User',
     },
+    readBy: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
     roomId: { type: String, required: [true, 'Room id is required!'] },
   },
   { timestamps: true },

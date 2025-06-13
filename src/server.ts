@@ -50,6 +50,7 @@ io.on('connection', (socket) => {
           receiver,
           roomId,
           image: imageUrl,
+          readBy: [sender],
         });
 
         const populatedMsg = await Message.findById(newMsg._id).populate(
@@ -63,6 +64,17 @@ io.on('connection', (socket) => {
       }
     },
   );
+
+  socket.on('markAsRead', async ({ roomId, userId }) => {
+    try {
+      await Message.updateMany(
+        { roomId, receiver: userId, readBy: { $ne: userId } },
+        { $addToSet: { readBy: userId } },
+      );
+    } catch (err) {
+      console.error('Error marking messages as read', err);
+    }
+  });
 
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
