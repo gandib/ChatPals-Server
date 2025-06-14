@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import jwt from 'jsonwebtoken';
+import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import httpStatus from 'http-status';
 import { TLoginUser, TUser } from './user.interface';
 import { User } from './user.model';
@@ -60,9 +60,9 @@ const loginUser = async (payload: TLoginUser) => {
     image: user?.image,
     bio: user?.bio,
   };
-
-  const token = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
-    expiresIn: '7d',
+  // expiresIn: SignOptions['expiresIn'],
+  const token = jwt.sign(jwtPayload, config.jwt_access_secret as Secret, {
+    expiresIn: config.jwt_access_secret_expire_in as SignOptions['expiresIn'],
   });
 
   const userData = await User.findOne({ email: payload?.email });

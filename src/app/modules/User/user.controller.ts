@@ -61,7 +61,6 @@ const getUser = catchAsync(async (req, res) => {
 
 const getUserById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const result = await userServices.getUserById(id as string);
 
   sendResponse(res, {
@@ -122,13 +121,13 @@ const forgetPassword = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  const token = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
   const result = await userServices.resetPassword(req.body, token as string);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Password is reset successfully!',
+    message: 'Password is reseted successfully!',
     data: result,
   });
 });
