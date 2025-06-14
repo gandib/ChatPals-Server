@@ -112,16 +112,27 @@ const getUserById = async (id: string) => {
   return result;
 };
 
-const updateUser = async (id: string, payload: TUser) => {
-  const user = await User.findById(id).select('-password');
+const updateUser = async (
+  id: string,
+  payload: TUser & { oldPassword: string; newPassword: string },
+) => {
+  const user = await User.findById(id).select('password');
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User Not found!');
   }
 
-  if (payload.password) {
-    payload.password = await bcrypt.hash(
-      payload.password,
+  if (payload.oldPassword && payload.newPassword) {
+    const isCorrectPassword: boolean = await bcrypt.compare(
+      payload.oldPassword,
+      user.password,
+    );
+
+    if (!isCorrectPassword) {
+      throw new Error('Login credential is incorrect!');
+    }
+    payload.newPassword = await bcrypt.hash(
+      payload.newPassword,
       Number(config.bcrypt_salt_rounds),
     );
   }
@@ -130,7 +141,7 @@ const updateUser = async (id: string, payload: TUser) => {
     id,
     {
       name: payload.name,
-      password: payload.password,
+      password: payload.newPassword,
       image: payload.image,
       bio: payload.bio,
     },

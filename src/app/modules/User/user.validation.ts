@@ -10,12 +10,15 @@ const createUserValidationSchema = z.object({
 });
 
 const updateUserValidationSchema = z.object({
-  body: z.object({
-    name: z.string().optional(),
-    password: z.string().optional(),
-    image: z.string().optional(),
-    bio: z.string().optional(),
-  }),
+  body: z
+    .object({
+      name: z.string().optional(),
+      oldPassword: z.string().optional(),
+      newPassword: z.string().optional(),
+      image: z.string().optional(),
+      bio: z.string().optional(),
+    })
+    .strict(),
 });
 
 const loginValidationSchema = z.object({

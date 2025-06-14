@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
 async function main() {
   await mongoose.connect(config.database_url as string);
   server.listen(config.port, () => {
-    console.log(`Server running on http://localhost:${config.port}`);
+    console.log(`Server running on ${config.port}`);
   });
 }
 
