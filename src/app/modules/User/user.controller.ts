@@ -72,8 +72,12 @@ const getUserById = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const { id } = req.query;
-  const result = await userServices.updateUser(id as string, req.body);
+  const user = req.user;
+  const result = await userServices.updateUser(
+    user?._id as string,
+    req.body,
+    req.file,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -97,8 +101,11 @@ const deleteUser = catchAsync(async (req, res) => {
 });
 
 const updateUserStatus = catchAsync(async (req, res) => {
-  const { id } = req.query;
-  const result = await userServices.updateUserStatus(id as string, req.body);
+  const user = req.user;
+  const result = await userServices.updateUserStatus(
+    user?._id as string,
+    req.body,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

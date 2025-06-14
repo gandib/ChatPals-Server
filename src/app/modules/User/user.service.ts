@@ -115,11 +115,16 @@ const getUserById = async (id: string) => {
 const updateUser = async (
   id: string,
   payload: TUser & { oldPassword: string; newPassword: string },
+  file: any,
 ) => {
   const user = await User.findById(id).select('password');
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User Not found!');
+  }
+
+  if (file) {
+    payload.image = file?.path;
   }
 
   if (payload.oldPassword && payload.newPassword) {

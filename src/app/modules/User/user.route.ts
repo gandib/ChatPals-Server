@@ -32,6 +32,12 @@ router.post(
 
 router.patch(
   '/update-user',
+  multerUpload.single('file'),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = JSON.parse(req.body.data);
+    next();
+  },
+  auth('user', 'admin'),
   validateRequest(userValidations.updateUserValidationSchema),
   userControllers.updateUser,
 );
