@@ -77,6 +77,9 @@ jobs:
             fi
           "
 
+          # Install PM2 globally
+          ssh "$EC2_USER@$EC2_HOST" "sudo npm install -g pm2"
+
           # Install production Dependencies on EC2
           ssh "$EC2_USER@$EC2_HOST" "cd ~/app && npm install --frozen-lockfile"
 
