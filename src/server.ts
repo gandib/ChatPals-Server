@@ -12,7 +12,7 @@ const server = http.createServer(app);
 // Create socket instance
 const io = new Server(server, {
   cors: {
-    origin: ['https://chatpals.vercel.app', 'http://localhost:5173'],
+    origin: ['https://chat-pals.vercel.app', 'http://localhost:5173'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   },
 });

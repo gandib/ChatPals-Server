@@ -10,7 +10,7 @@ const app = express();
 // Middlewares
 app.use(
   cors({
-    origin: ['https://chatpals.vercel.app', 'http://localhost:5173'],
+    origin: ['https://chat-pals.vercel.app', 'http://localhost:5173'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
