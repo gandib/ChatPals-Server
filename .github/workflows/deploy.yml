@@ -69,6 +69,14 @@ jobs:
             --exclude='.github' \
             ./ "$EC2_USER@$EC2_HOST:~/app/"
 
+          # Install Node.js 20.12.0 on EC2 if not already installed
+          ssh "$EC2_USER@$EC2_HOST" "
+            if ! node -v | grep 'v20.12.0' >/dev/null 2>&1; then
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&
+              sudo apt-get install -y nodejs
+            fi
+          "
+
           # Install production Dependencies on EC2
           ssh "$EC2_USER@$EC2_HOST" "cd ~/app && npm install --frozen-lockfile"
 
