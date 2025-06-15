@@ -84,7 +84,8 @@ jobs:
           ssh "$EC2_USER@$EC2_HOST" "cd ~/app && npm install --frozen-lockfile"
 
           # Stop existing PM2 process if it exists
-          ssh "$EC2_USER@$EC2_HOST" "pm2 delete nodejs-app || true"
+          ssh "$EC2_USER@$EC2_HOST" "pm2 kill || true"
+          ssh "$EC2_USER@$EC2_HOST" "pm2 delete all || true"
 
           # Start the application with PM2
-          ssh "$EC2_USER@$EC2_HOST" "cd ~/app && pm2 start src/server.ts --name nodejs-app"
+          ssh "$EC2_USER@$EC2_HOST" "cd ~/app && pm2 start ./dist/server.js --name nodejs-app --interpreter=node"
